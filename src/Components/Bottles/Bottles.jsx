@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Bottle from '../Bottle/Bottle';
 import Cart from "../Cart/Cart";
-import {addProduct, getItem} from '../../../public/LocalStorage/LocalStorge.js';
+import {addProduct, getItem, removeFromLocal} from '../../../public/LocalStorage/LocalStorge.js';
 
 const Bottles = () => {
     const [bottles, setBottles] = useState([]); 
@@ -24,25 +24,32 @@ const Bottles = () => {
                     saveCart.push(bottle);
                 }
             }
-            
+
             setCart(saveCart);
         }
-    },[bottles])
+    },[bottles]);
+
     const handleClick = (bottle) => {
         let selectedData = [...cart, bottle];
         addProduct(bottle.id);
         setCart(selectedData);
+    }
+
+    const handleRemoveCart = id => {
+        const remaingCart = cart.filter(bottle => bottle.id !== id);
+        setCart(remaingCart);
+        removeFromLocal(id);
     }
     return (
         <div className="">
             <h3>Total Bottles : { bottles.length }</h3>
             <h3>Cart Items : { cart.length }</h3>
             <div className="flex flex-wrap gap-2">
-                {cart.map(item => <Cart item={item}></Cart>)}
+                {cart.map((item, index) => <Cart key={index} item={item} handleRemoveCart={handleRemoveCart}></Cart>)}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {
-                bottles.map(bottle => <Bottle bottle={bottle} handleClick={handleClick}/>)
+                bottles.map(bottle => <Bottle key={bottle.id} bottle={bottle} handleClick={handleClick}/>)
                 } 
             </div>
          

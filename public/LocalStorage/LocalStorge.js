@@ -13,4 +13,11 @@ function addProduct(id) {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-export {addProduct, getItem};
+const removeFromLocal = id => {
+    const cart = getItem();
+    // removing Every ID
+    const remaining = cart.filter(idx=> idx !== id);
+    localStorage.setItem('cart', JSON.stringify(remaining));
+}
+
+export {addProduct, getItem, removeFromLocal};
