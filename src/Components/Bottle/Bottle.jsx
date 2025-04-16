@@ -1,6 +1,5 @@
 const Bottle = ({bottle, handleClick}) => {
     const {name, img, price} = bottle;
-    console.log(bottle);
     return (
         <div>
             <h2 className="text-teal-500 text-lg">PName : {name}</h2>
